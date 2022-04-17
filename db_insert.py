@@ -20,6 +20,17 @@ class Insert:
         except Exception as e:
             return str(e)
 
+    def order_insert(self, document):
+        try:
+            if self.db_name_query("orders"):
+                database = self.db_connection["orders"]
+                database.save(document)
+                return True
+            else:
+                return False
+        except Exception as e:
+            return str(e)
+
     def user_insert(self, name, surname, mail, phone_no, password):
         try:
             query = que.Query()

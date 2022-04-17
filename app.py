@@ -157,5 +157,21 @@ def ShopCartDelete():
     except KeyError as e:
         return "Key Error"
 
+@app.route('/OrdersAppend', methods=['POST'])
+def OrdersAppend():
+    try:
+        que = query.Query()
+        user_mail = request.form["user_mail"]
+        result = que.order_shopcart_query(user_mail)
+
+        if result:
+            return str(result)
+        elif result == None:
+            return "False"
+        else:
+            return str(result)
+    except KeyError as e:
+        return "Key Error"
+
 if __name__ == '__main__':
     app.run()

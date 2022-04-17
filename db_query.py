@@ -1,4 +1,5 @@
 import couchdb
+import db_insert as insert
 
 class Query:
 
@@ -66,6 +67,27 @@ class Query:
         except Exception as e:
             return str(e)
 
+    def order_shopcart_query(self, user_mail):
+        try:
+            ins = insert.Insert()
+            doc = self.user_query(user_mail)
+
+            database = self.db_connection["shop_cart"]
+            for docx in database.find({'selector': {"user_id": doc["id"]}}):
+                document = {
+                    "user_mail": user_mail,
+                    "product_id": docx["product_id"],
+                    "product_name": docx["product_name"],
+                    "product_content": docx["product_content"],
+                    "product_price": docx["product_price"],
+                }
+                if ins.order_insert(document):
+                    database.delete(docx)
+            return True
+
+        except Exception as e:
+            return str(e)
+
 
     def user_control_query(self, mail):
         database = self.db_connection["users"]
@@ -73,7 +95,8 @@ class Query:
             return True
         return False
 
-
+query = Query()
+query.order_shopcart_query("yasin@mail.com")
 # if __name__ == "__main__":
 #     query = Query()
 #     print(query.shop_cart_query("test@gmail.com"))
