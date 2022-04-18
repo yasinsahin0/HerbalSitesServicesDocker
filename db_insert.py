@@ -71,7 +71,6 @@ class Insert:
 
     def product_image_insert(self, product_id, product_image_url):
         try:
-
             curs = self.db_con.cursor()
             curs.execute("INSERT INTO [abdullah_pys].[İmage] (ProductID,URL) VALUES (?,?)",
                             int(product_id),
