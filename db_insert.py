@@ -129,11 +129,11 @@ class Insert:
 
 
 
-nesne = Insert()
+# nesne = Insert()
 #
 # print(nesne.order_detail_insert(3, 27, 1))
 # print(nesne.order_insert(1,2))
-print(nesne.cart_insert(1,2,4))
+# print(nesne.cart_insert(1,2,4))
 # print(nesne.product_image_insert(1,"url2"))
 # print(nesne.product_insert("Tarhun",13,"Tarhun açıklaması",147,"baharat"))
 # print(nesne.user_insert("Yasin","Şahin","yasin@mail.com","0541884423","test123","Samsun","Hançerli mahallesi","Test adres",2))

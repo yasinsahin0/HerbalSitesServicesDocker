@@ -143,7 +143,7 @@ def top_sellers_query():
     print('[INFO]--[test]--[FUNCTION]')
     count = request.form['count']
     que = query.Query()
-    result = que.top_sellers_query(count)
+    result = que.top_sellers_query(int(count))
     return result
 
 @app.route('/image_query', methods=['POST'])
@@ -160,7 +160,7 @@ def product_price_query():
     product_id = request.form['product_id']
     product_count = request.form['product_count']
     que = query.Query()
-    result = que.product_price_query(product_id,product_count)
+    result = que.product_price_query(int(product_id),float(product_count))
     return str(result)
 
 @app.route('/product_list_query', methods=['POST'])
@@ -168,7 +168,7 @@ def product_list_query():
     print('[INFO]--[test]--[FUNCTION]')
     page_number = request.form['page_number']
     que = query.Query()
-    result = que.product_list_query(page_number)
+    result = que.product_list_query(int(page_number))
     return result
 
 if __name__ == '__main__':
