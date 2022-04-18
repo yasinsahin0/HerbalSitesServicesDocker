@@ -5,15 +5,15 @@
 ```
 url = /status_insert
 method = POST
-```
 
-*Parameters ;*
-```
+
+Parameters ;
+
 name
 status_id
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -22,10 +22,10 @@ Error : "Exception"
 ```
 url = /user_insert
 method = POST
-```
 
-*Parameters ;*
-```
+
+Parameters ;
+
 user_name
 user_surname
 user_mail
@@ -35,9 +35,9 @@ user_city
 user_district
 user_adress
 user_status
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -46,18 +46,18 @@ Error : "Exception"
 ```
 url = /product_insert
 method = POST
-```
 
-*Parameters ;*
-```
+
+Parameters ;
+
 product_name
 product_price
 product_content
 product_stock
 product_category
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -66,15 +66,15 @@ Error : "Exception"
 ```
 url = /product_image_insert
 method = POST
-```
 
-*Parameters ;*
-```
+
+Parameters ;
+
 product_id
 product_image_url
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -83,16 +83,16 @@ Error : "Exception"
 ```
 url = /cart_insert
 method = POST
-```
+
 
 *Parameters ;*
-```
+
 user_id
 product_id
 count
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -101,15 +101,14 @@ Error : "Exception"
 ```
 url = /order_insert
 method = POST
-```
 
-*Parameters ;*
-```
+Parameters ;
+
 user_id
 status
-```
+
 *Return ;*
-```
+
 Başarılı : "True"
 Error : "Exception"
 ```
@@ -118,16 +117,15 @@ Error : "Exception"
 ```
 url = /order_detail_insert
 method = POST
-```
 
-*Parameters ;*
-```
+Parameters ;
+
 product_id
 product_count
 order_id
-```
-*Return ;*
-```
+
+Return ;
+
 Başarılı : "True"
 Error : "Exception"
 ```
