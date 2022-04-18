@@ -197,3 +197,20 @@ Başarılı : "True"
 Başarısız : "False"
 Error : "KeyError (gönderilen parametre hatası)"
 ```
+## Alış-veriş sepetindeki ürünleri satın alma
+
+```
+url = /OrdersAppend
+method = POST
+```
+
+*Parameters ;*
+```
+Admin e-posta adresi : "user_mail"
+```
+*Return ;*
+```
+Başarılı : "True"
+Başarısız : "False"
+Error : "KeyError (gönderilen parametre hatası)"
+```

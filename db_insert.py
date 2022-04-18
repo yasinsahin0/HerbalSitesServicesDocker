@@ -1,108 +1,62 @@
-import couchdb
-import db_query as que
+import pyodbc
 
 class Insert:
-
     def __init__(self):
-        self.db_connection = couchdb.Server("http://admin:admin@172.105.73.62:5984/")
+        self.db_con = pyodbc.connect(
+            'Driver={ODBC Driver 17 for SQL Server};'
+            'Server=sql.athena.domainhizmetleri.com;'
+            'Database=abdullah_web;'
+            'UID=abdullah_pys;'
+            'PWD=@PassWord123;'
+        )
 
-    def product_insert(self, name, content, price):
+    def test(self):
         try:
-            if self.db_name_query("products"):
-                database = self.db_connection["products"]
-                doc = {"name": name.lower(),
-                       "content": content,
-                       "price": price}
-                database.save(doc)
-                return True
-            else:
-                return False
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[User]')
+            users = curs.fetchall()
+            for i in users:
+                print(i)
         except Exception as e:
-            return str(e)
+            print(e)
 
-    def order_insert(self, document):
+    def status_insert(self, name, status_id):
         try:
-            if self.db_name_query("orders"):
-                database = self.db_connection["orders"]
-                database.save(document)
-                return True
-            else:
-                return False
+            curs = self.db_con.cursor()
+            curs.execute(
+                "insert into Status(ID,Name) values (?, ?)", status_id, str(name))
+            curs.commit()
+            return "Successful"
         except Exception as e:
-            return str(e)
+            e = str(e)
+            return e
 
-    def user_insert(self, name, surname, mail, phone_no, password):
+    def user_insert(self, user_name, user_surname, user_mail, user_phone, user_pass, user_city, user_district, user_adress, user_status):
         try:
-            query = que.Query()
-            if phone_no[0:2] == "+9":
-                phone_no = phone_no[2:]
-            if phone_no[0] == "9":
-                phone_no = phone_no[1:]
 
-            if query.user_control_query(mail):
-                return False
-            else:
-                if self.db_name_query("users"):
-                    database = self.db_connection["users"]
-                    doc = {"name": name,
-                           "surname": surname,
-                           "mail": mail,
-                           "phone_no": int(phone_no),
-                           "password": password}
-                    database.save(doc)
-                    return True
-                else:
-                    return False
+            curs = self.db_con.cursor()
+            curs.execute("INSERT INTO [abdullah_pys].[User] (Name,Surname,Mail,Phone,Password,City,District,Adress,Status) VALUES (?,?,?,?,?,?,?,?,?)",
+                            str(user_name),
+                            str(user_surname),
+                            str(user_mail),
+                            str(user_phone),
+                            str(user_pass),
+                            str(user_city),
+                            str(user_district),
+                            str(user_adress),
+                            int(user_status))
+            curs.commit()
+            return "Successful"
         except Exception as e:
-            return str(e)
-
-    def shop_cart_insert(self, user_mail, pro_name):
-        try:
-            query = que.Query()
-            user_doc = query.user_query(user_mail)
-            products_doc = query.product_query(pro_name)
-            if self.db_name_query("shop_cart"):
-                database = self.db_connection["shop_cart"]
-                doc = {
-                    "user_id": user_doc["id"],
-                    "product_id": products_doc["id"],
-                    "product_name": products_doc["name"],
-                    "product_content": products_doc["content"],
-                    "product_price": products_doc["price"]
-                }
-                database.save(doc)
-                return True
-            else:
-                return False
-        except Exception as e:
-            return str(e)
-
-    def admin_insert(self, admin_mail, admin_password):
-        try:
-            if self.db_name_query("admin"):
-                database = self.db_connection["admin"]
-                doc = {"mail": admin_mail,
-                       "password": admin_password}
-                database.save(doc)
-                return True
-            else:
-                return False
-        except Exception as e:
-            return str(e)
-
-    def db_name_query(self, dbname):
-        for i in self.db_connection:
-            if i == dbname:
-                return True
-        self.db_connection.create(dbname)
-        return True
+            e = str(e)
+            return e
 
 
 
+nesne = Insert()
+nesne.test()
 
-# if __name__ == "__main__":
-#     insert = Insert()
-#     print(insert.admin_insert("admin", "test123"))
-#     print(insert.user_insert("test1","test1","test1@gmail.com","+905415552266","test123"))
-#     print(insert.product_insert("Test 3", "test cont", 99.21))
-#     print(insert.shop_cart_insert("test@gmail.com","test 2"))
+#print(nesne.user_insert("Yasin","Şahin","yasin@mail.com","0541884423","test123","Samsun","Hançerli mahallesi","Test adres",2))
+
+# nesne.admin_insert("test","test","test@mail.com","test123")
+# nesne.test()
