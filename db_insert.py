@@ -1,5 +1,6 @@
 import pyodbc
 import datetime
+import db_query as query
 
 class Insert:
     def __init__(self):
@@ -27,7 +28,7 @@ class Insert:
             curs.execute(
                 "insert into Status(ID,Name) values (?, ?)", status_id, str(name))
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
@@ -47,7 +48,7 @@ class Insert:
                             str(user_adress),
                             int(user_status))
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
@@ -63,7 +64,7 @@ class Insert:
                             int(product_stock),
                             str(product_category))
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
@@ -76,7 +77,7 @@ class Insert:
                             int(product_id),
                             product_image_url)
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
@@ -90,7 +91,7 @@ class Insert:
                             int(product_id),
                             int(count))
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
@@ -106,14 +107,15 @@ class Insert:
                             insert_date,
                             update_date)
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
 
-    def order_detail_insert(self, product_id, product_price, product_count, order_id):
+    def order_detail_insert(self, product_id, product_count, order_id):
         try:
-
+            que = query.Query()
+            product_price = que.product_price_query(product_id,product_count)
             curs = self.db_con.cursor()
             curs.execute("INSERT INTO [abdullah_pys].[OrderDetail] (ProductID,ProductPrice,Count,OrderID) VALUES (?,?,?,?)",
                             int(product_id),
@@ -121,19 +123,19 @@ class Insert:
                             int(product_count),
                             int(order_id))
             curs.commit()
-            return "Successful"
+            return True
         except Exception as e:
             e = str(e)
             return e
 
 
 
-nesne = Insert()
-
-# print(nesne.order_detail_insert(1,12.22,5,1))
+# nesne = Insert()
+#
+# print(nesne.order_detail_insert(3, 27, 1))
 # print(nesne.order_insert(1,2))
-# print(nesne.cart_insert(1,1,2))
+# print(nesne.cart_insert(1,2,4))
 # print(nesne.product_image_insert(1,"url2"))
-# print(nesne.product_insert("test",44,"test açıklama",50,"test category"))
+# print(nesne.product_insert("Kekik",45,"Kekik açıklaması",100,"baharat"))
 # print(nesne.user_insert("Yasin","Şahin","yasin@mail.com","0541884423","test123","Samsun","Hançerli mahallesi","Test adres",2))
 # nesne.admin_insert("test","test","test@mail.com","test123")

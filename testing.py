@@ -113,6 +113,7 @@ if __name__ == "__main__":
     tst.user()
     tst.product()
     tst.cart()
+    tst.image()
     tst.order()
     tst.order_detail()
     tst.status()

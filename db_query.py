@@ -10,3 +10,178 @@ class Query:
             'PWD=@PassWord123;'
         )
 
+    def admin_login_query(self, admin_mail, admin_password):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Admin] WHERE Mail = ? AND Password = ?',
+                         admin_mail,
+                         admin_password)
+            datatable = curs.fetchall()
+            for data in datatable:
+                return True
+            return False
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def user_login_query(self, user_mail, user_password):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[User] WHERE Mail = ? AND Password = ?',
+                         user_mail,
+                         user_password)
+            datatable = curs.fetchall()
+            for data in datatable:
+                return True
+            return False
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def user_query(self, user_mail):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[User] WHERE Mail = ? ', user_mail)
+            datatable = curs.fetchall()
+            for data in datatable:
+                dictionary = {
+                    "id": data[0],
+                    "Name": data[1],
+                    "Surname": data[2],
+                    "Mail": data[3],
+                    "Phone": data[4],
+                    "Password": data[5],
+                    "City": data[6],
+                    "District": data[7],
+                    "Adress": data[8],
+                    "Status": data[9]
+                }
+                return dictionary
+            return False
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def cart_query(self, user_id):
+        try:
+            dicx ={}
+            count = 0
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Cart] WHERE UserID = ? ', user_id)
+            datatable = curs.fetchall()
+            for data in datatable:
+                count += 1
+                dictionary = {
+                    "id": data[0],
+                    "UserID": data[1],
+                    "ProductID": self.product_query(data[2]),
+                    "Count": data[3]
+                }
+                dicx.update({count: dictionary})
+
+            return dicx
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def product_query(self, product_id):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ? ', int(product_id))
+            datatable = curs.fetchall()
+            for data in datatable:
+                dictionary = {
+                    "ProductID": data[0],
+                    "Name": data[1],
+                    "Price": data[2],
+                    "Content": data[3],
+                    "Stok": data[4],
+                    "Category": data[5]
+                }
+                return dictionary
+            return False
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def product_five_query(self):
+        try:
+            dict_meta = {}
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            datatable = curs.fetchall()
+            counter = 0
+            for i in range(len(datatable), 0, -1):
+                counter += 1
+                dictionary = self.product_query(i)
+                dict_meta.update({counter: dictionary})
+                if counter == 5:
+                    return dict_meta
+
+            return False
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def top_sellers_query(self, count):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[OrderDetail] ORDER BY Count DESC')
+            datatable = curs.fetchall()
+            dicte = {}
+            counter = 0
+            for data in datatable:
+                counter += 1
+                product_dict = self.product_query(data[1])
+                dicte.update({counter: product_dict})
+
+                if count == counter:
+                    return dicte
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def image_query(self, product_id):
+        try:
+            dict_meta = {}
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[İmage] WHERE ProductID = ?', int(product_id))
+            datatable = curs.fetchall()
+            counter = 0
+            for data in datatable:
+                counter += 1
+                dicte = {
+                    "ProductID": data[1],
+                    "URL": data[2],
+                }
+                dict_meta.update({counter: dicte})
+
+            return dict_meta
+        except Exception as e:
+            e = str(e)
+            return e
+    def product_price_query(self, product_id, product_count):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ?', int(product_id))
+            datatable = curs.fetchall()
+            for data in datatable:
+               return data[2] * product_count
+        except Exception as e:
+            e = str(e)
+            return e
+
+
+
+# nesne = Query()
+# print(nesne.image_query(1))
+
+# print(nesne.top_sellers_query(2))
+# print(nesne.product_price_query(2,3))
+# print(nesne.product_id_query())
+# nesne.top_sellers_query(5)
+# print(nesne.product_five_query())
+# print(nesne.cart_query(1))
+# print(nesne.user_query("yasin@mail.com"))
+# print(nesne.user_login_query("yasin@mail.com", "test123"))
+# print(nesne.admin_login_query("test@mail.com", "test123"))
