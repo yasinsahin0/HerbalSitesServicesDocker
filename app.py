@@ -89,5 +89,87 @@ def order_detail_insert():
     result = ins.order_detail_insert(product_id, product_count, order_id)
     return str(result)
 
+@app.route('/admin_login_query', methods=['POST'])
+def admin_login_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    admin_mail = request.form['admin_mail']
+    admin_password = request.form['admin_password']
+    que = query.Query()
+    result = que.admin_login_query(admin_mail, admin_password)
+    return str(result)
+
+@app.route('/user_login_query', methods=['POST'])
+def user_login_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_mail = request.form['user_mail']
+    user_password = request.form['user_password']
+    que = query.Query()
+    result = que.user_login_query(user_mail, user_password)
+    return str(result)
+
+@app.route('/user_query', methods=['POST'])
+def user_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_mail = request.form['user_mail']
+    que = query.Query()
+    result = que.user_query(user_mail)
+    return result
+
+@app.route('/cart_query', methods=['POST'])
+def cart_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_id = request.form['user_id']
+    que = query.Query()
+    result = que.cart_query(user_id)
+    return result
+
+@app.route('/product_query', methods=['POST'])
+def product_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    product_id = request.form['product_id']
+    que = query.Query()
+    result = que.product_query(product_id)
+    return result
+
+@app.route('/product_last_five_query', methods=['POST'])
+def product_last_five_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    que = query.Query()
+    result = que.product_last_five_query()
+    return result
+
+@app.route('/top_sellers_query', methods=['POST'])
+def top_sellers_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    count = request.form['count']
+    que = query.Query()
+    result = que.top_sellers_query(count)
+    return result
+
+@app.route('/image_query', methods=['POST'])
+def image_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    product_id = request.form['product_id']
+    que = query.Query()
+    result = que.image_query(product_id)
+    return result
+
+@app.route('/product_price_query', methods=['POST'])
+def product_price_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    product_id = request.form['product_id']
+    product_count = request.form['product_count']
+    que = query.Query()
+    result = que.product_price_query(product_id,product_count)
+    return str(result)
+
+@app.route('/product_list_query', methods=['POST'])
+def product_list_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    page_number = request.form['page_number']
+    que = query.Query()
+    result = que.product_list_query(page_number)
+    return result
+
 if __name__ == '__main__':
     app.run()

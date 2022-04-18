@@ -1,4 +1,5 @@
 import pyodbc
+import random
 
 class Query:
     def __init__(self):
@@ -57,7 +58,7 @@ class Query:
                     "Status": data[9]
                 }
                 return dictionary
-            return False
+            return "False"
         except Exception as e:
             e = str(e)
             return e
@@ -99,12 +100,12 @@ class Query:
                     "Category": data[5]
                 }
                 return dictionary
-            return False
+            return "False"
         except Exception as e:
             e = str(e)
             return e
 
-    def product_five_query(self):
+    def product_last_five_query(self):
         try:
             dict_meta = {}
             curs = self.db_con.cursor()
@@ -118,7 +119,7 @@ class Query:
                 if counter == 5:
                     return dict_meta
 
-            return False
+            return "False"
         except Exception as e:
             e = str(e)
             return e
@@ -160,6 +161,7 @@ class Query:
         except Exception as e:
             e = str(e)
             return e
+
     def product_price_query(self, product_id, product_count):
         try:
             curs = self.db_con.cursor()
@@ -171,17 +173,70 @@ class Query:
             e = str(e)
             return e
 
+    def random_product_query(self, count):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            datatable = curs.fetchall()
+            dicte = {}
+            counter = 0
+            for i in range(0,count):
+                counter += 1
+                rndm = random.randint(1, len(datatable))
+                curs = self.db_con.cursor()
+                curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ?', rndm)
+                dtable = curs.fetchall()
+                for data in dtable:
+                    dicx = {
+                        "ProductID": data[0],
+                        "Name": data[1],
+                        "Price": data[2],
+                        "Content": data[3],
+                        "Stok": data[4],
+                        "Category": data[5]
+                    }
+                    dicte.update({counter: dicx})
+                if count == counter:
+                    return dicte
+            return "False"
+        except Exception as e:
+            e = str(e)
+            return e
 
+    def product_list_query(self, page_number):
+        try:
+            dicte = {}
+            curs = self.db_con.cursor()
+            curs.execute('SELECT TOP 12 * FROM [abdullah_pys].[Product] WHERE ID <= ? AND ID > ? ORDER BY ID DESC', page_number*12, page_number*12-12)
+            datatable = curs.fetchall()
+            counter = 0
+            for data in datatable:
+                counter += 1
+                dicx = {
+                    "ProductID": data[0],
+                    "Name": data[1],
+                    "Price": data[2],
+                    "Content": data[3],
+                    "Stok": data[4],
+                    "Category": data[5]
+                }
+                dicte.update({counter: dicx})
+            return dicte
+        except Exception as e:
+            e = str(e)
+            return e
 
 # nesne = Query()
+# print(nesne.product_query(1))
+# print(nesne.product_list_query(1))
+# print(nesne.random_product_query(3))
 # print(nesne.image_query(1))
-
 # print(nesne.top_sellers_query(2))
 # print(nesne.product_price_query(2,3))
 # print(nesne.product_id_query())
 # nesne.top_sellers_query(5)
-# print(nesne.product_five_query())
+# print(nesne.product_last_five_query())
 # print(nesne.cart_query(1))
-# print(nesne.user_query("yasin@mail.com"))
+# print(nesne.user_query("5@mail.com"))
 # print(nesne.user_login_query("yasin@mail.com", "test123"))
 # print(nesne.admin_login_query("test@mail.com", "test123"))
