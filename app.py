@@ -171,5 +171,13 @@ def product_list_query():
     result = que.product_list_query(int(page_number))
     return result
 
+@app.route('/random_product_query', methods=['POST'])
+def random_product_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    count = request.form['count']
+    que = query.Query()
+    result = que.random_product_query(int(count))
+    return result
+
 if __name__ == '__main__':
     app.run()
