@@ -194,5 +194,13 @@ def total_product_page_count():
     result = que.total_product_page_count()
     return result
 
+@app.route('/cart_delete', methods=['POST'])
+def cart_delete():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_id = request.form['user_id']
+    delet = delete.Delete()
+    result = delet.cart_delete(user_id)
+    return str(result)
+
 if __name__ == '__main__':
     app.run()
