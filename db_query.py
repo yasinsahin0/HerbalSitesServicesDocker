@@ -249,5 +249,21 @@ class Query:
             e = str(e)
             return e
 
+    def total_product_page_count(self):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            datatable = curs.fetchall()
+            counter = 0
+            for data in datatable:
+                counter += 1
+            page_count = int(counter / 12) + 1
+            dicte = {"product_count":counter,
+                     "page_count":page_count}
+            return dicte
+        except Exception as e:
+            e = str(e)
+            return e
 
 # nesne = Query()
+# print(nesne.total_product_page_count())

@@ -187,5 +187,12 @@ def cart_price_count_query():
     result = que.cart_price_count_query(int(user_id))
     return result
 
+@app.route('/total_product_page_count', methods=['POST'])
+def total_product_page_count():
+    print('[INFO]--[test]--[FUNCTION]')
+    que = query.Query()
+    result = que.total_product_page_count()
+    return result
+
 if __name__ == '__main__':
     app.run()

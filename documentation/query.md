@@ -261,3 +261,22 @@ Başarılı :
         }
 Error : "Exception"
 ```
+## total_product_page_count
+
+```
+url = /total_product_page_count
+method = POST
+
+Parameters ;
+
+YOK
+
+Return ;
+
+Başarılı : 
+        {
+            'product_count': 15, 
+            'page_count': 2
+        }
+Error : "Exception"
+```
