@@ -242,3 +242,22 @@ Başarılı :
 Başarısız : "False"
 Error : "Exception"
 ```
+## cart_price_count_query
+
+```
+url = /cart_price_count_query
+method = POST
+
+Parameters ;
+
+user_id
+
+Return ;
+
+Başarılı : 
+        {
+            "total_product": 6,
+            "total_price": 160.0
+        }
+Error : "Exception"
+```

@@ -226,17 +226,28 @@ class Query:
             e = str(e)
             return e
 
+    def cart_price_count_query(self, user_id):
+        try:
+
+            curs = self.db_con.cursor()
+            curs.execute('SELECT ProductID,Count FROM [abdullah_pys].[Cart] WHERE UserID = ?', user_id)
+            datatable = curs.fetchall()
+            product_count = 0
+            cart_price = 0
+            for data in datatable:
+                curs = self.db_con.cursor()
+                curs.execute('SELECT Price FROM [abdullah_pys].[Product] WHERE ID = ?', data[0])
+                datat = curs.fetchall()
+
+                for dt in datat:
+                    product_count += data[1]
+                    cart_price += dt[0]*data[1]
+            dicte = {"total_product":product_count,
+                     "total_price":cart_price}
+            return dicte
+        except Exception as e:
+            e = str(e)
+            return e
+
+
 # nesne = Query()
-# print(nesne.product_query(1))
-# print(nesne.product_list_query(1))
-# print(nesne.random_product_query(3))
-# print(nesne.image_query(1))
-# print(nesne.top_sellers_query(2))
-# print(nesne.product_price_query(2,3))
-# print(nesne.product_id_query())
-# nesne.top_sellers_query(5)
-# print(nesne.product_last_five_query())
-# print(nesne.cart_query(1))
-# print(nesne.user_query("5@mail.com"))
-# print(nesne.user_login_query("yasin@mail.com", "test123"))
-# print(nesne.admin_login_query("test@mail.com", "test123"))

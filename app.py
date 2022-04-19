@@ -179,5 +179,13 @@ def random_product_query():
     result = que.random_product_query(int(count))
     return result
 
+@app.route('/cart_price_count_query', methods=['POST'])
+def cart_price_count_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_id = request.form['user_id']
+    que = query.Query()
+    result = que.cart_price_count_query(int(user_id))
+    return result
+
 if __name__ == '__main__':
     app.run()
