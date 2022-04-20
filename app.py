@@ -202,5 +202,13 @@ def cart_delete():
     result = delet.cart_delete(user_id)
     return str(result)
 
+@app.route('/cart_user_procedure', methods=['POST'])
+def cart_user_procedure():
+    print('[INFO]--[test]--[FUNCTION]')
+    user_id = request.form['user_id']
+    que = query.Query()
+    result = que.cart_user_procedure(user_id)
+    return str(result)
+
 if __name__ == '__main__':
     app.run()

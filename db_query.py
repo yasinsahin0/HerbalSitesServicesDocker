@@ -265,5 +265,15 @@ class Query:
             e = str(e)
             return e
 
+    def cart_user_procedure(self, user_id):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('EXEC [abdullah_kulup].[Cart2Order] @userid = ?', user_id)
+            return True
+        except Exception as e:
+            e = str(e)
+            return e
+
 # nesne = Query()
+# nesne.cart_userid(1)
 # print(nesne.total_product_page_count())
