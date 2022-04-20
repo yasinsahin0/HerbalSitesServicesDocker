@@ -1,5 +1,9 @@
 import pyodbc
 import random
+import datetime
+import db_update as update
+import db_insert as insert
+import db_delete as delete
 
 class Query:
     def __init__(self):
@@ -258,22 +262,123 @@ class Query:
             for data in datatable:
                 counter += 1
             page_count = int(counter / 12) + 1
-            dicte = {"product_count":counter,
-                     "page_count":page_count}
+            dicte = {"product_count": counter,
+                     "page_count": page_count}
             return dicte
         except Exception as e:
             e = str(e)
             return e
 
-    def cart_user_procedure(self, user_id):
+    def order_query(self, user_id):
         try:
+
             curs = self.db_con.cursor()
-            curs.execute('EXEC [abdullah_kulup].[Cart2Order] @userid = ?', user_id)
+            curs.execute('SELECT * FROM [abdullah_pys].[Order] WHERE UserID = ? ', int(user_id))
+            datatable = curs.fetchall()
+
+            for data in datatable:
+
+                dictionary = {
+                    "id": data[0],
+                    "UserID": data[1],
+                    "Status": data[2],
+                    "InsertDate": data[3],
+                    "UpdateDate": data[4]
+                }
+
+                return dictionary
+
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def orders_query(self, user_id):
+        try:
+            dicte = {}
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Order] WHERE UserID = ? ', int(user_id))
+            datatable = curs.fetchall()
+            counter = 0
+            for data in datatable:
+                counter += 1
+                dictionary = {
+                    "id": data[0],
+                    "UserID": data[1],
+                    "Status": data[2],
+                    "InsertDate": data[3],
+                    "UpdateDate": data[4]
+                }
+                dicte.update({counter: dictionary})
+            return dicte
+
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def cart_local_query(self, user_id):
+        try:
+            counter = 0
+            dicte = {}
+            curs = self.db_con.cursor()
+            curs.execute('SELECT * FROM [abdullah_pys].[Cart] WHERE UserID = ? ', int(user_id))
+            datatable = curs.fetchall()
+            for data in datatable:
+                counter += 1
+                dictionary = {
+                    "ProductID": data[2],
+                    "Count": data[3]
+                }
+                dicte.update({counter: dictionary})
+            return dicte
+
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def order_insert_que(self, user_id, status):
+        try:
+            insert_date = datetime.datetime.now()
+            update_date = datetime.datetime.now()
+            curs = self.db_con.cursor()
+            curs.execute("INSERT INTO [abdullah_pys].[Order] (UserID,Status,InsertDate,UpdateDate) VALUES (?,?,?,?)",
+                            int(user_id),
+                            int(status),
+                            insert_date,
+                            update_date)
+            curs.commit()
             return True
         except Exception as e:
             e = str(e)
             return e
 
+    def cart_user_id_insert(self, user_id):
+        try:
+            order_insert_return = self.order_insert_que(user_id, 0)
+            if order_insert_return:
+                order_query_return = self.order_query(user_id)
+                if order_query_return != False:
+                    order_id = order_query_return["id"]
+                    cart_query_return = self.cart_local_query(user_id)
+                    order_detail = False
+                    for i in range(1, len(cart_query_return)+1):
+                        product_id = cart_query_return[i]["ProductID"]
+                        product_count = cart_query_return[i]["Count"]
+                        upd = update.Update()
+                        upd.product_stock_decrease(product_id,product_count)
+                        product_que_return = self.product_query(product_id)
+                        product_price = product_que_return["Price"]
+                        ins = insert.Insert()
+                        order_detail = ins.order_detail_insert(product_id, product_price, product_count, order_id)
+                    dele = delete.Delete()
+                    if order_detail:
+                        dele.cart_delete(user_id)
+                        return True
+        except Exception as e:
+            return str(e)
+
+
+
 # nesne = Query()
-# nesne.cart_userid(1)
+# print(nesne.cart_user_id_insert(1))
+# print(nesne.cart_local_query(2))
 # print(nesne.total_product_page_count())

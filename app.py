@@ -2,7 +2,7 @@ from flask import Flask, request
 import db_insert as insert
 import db_query as query
 import db_delete as delete
-
+import db_update as update
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -207,8 +207,25 @@ def cart_user_procedure():
     print('[INFO]--[test]--[FUNCTION]')
     user_id = request.form['user_id']
     que = query.Query()
-    result = que.cart_user_procedure(user_id)
+    result = que.cart_user_id_insert(user_id)
     return str(result)
+
+@app.route('/order_status_update', methods=['POST'])
+def order_status_update():
+    print('[INFO]--[test]--[FUNCTION]')
+    order_id = request.form['order_id']
+    order_status = request.form['order_status']
+    ups = update.Update()
+    result = ups.order_status_update(order_id,order_status)
+    return str(result)
+
+@app.route('/orders_query', methods=['POST'])
+def orders_query():
+    print('[INFO]--[test]--[FUNCTION]')
+    order_id = request.form['user_id']
+    que = query.Query()
+    result = que.orders_query(order_id)
+    return result
 
 if __name__ == '__main__':
     app.run()

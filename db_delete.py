@@ -19,3 +19,26 @@ class Delete:
             e = str(e)
             return e
 
+    def order_detail_delete(self):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('DELETE FROM [abdullah_pys].[OrderDetail]')
+            self.db_con.commit()
+            return True
+        except Exception as e:
+            e = str(e)
+            return e
+
+    def order_delete(self):
+        try:
+            curs = self.db_con.cursor()
+            curs.execute('DELETE FROM [abdullah_pys].[Order]')
+            self.db_con.commit()
+            return True
+        except Exception as e:
+            e = str(e)
+            return e
+
+# nesne = Delete()
+# nesne.order_detail_delete()
+# nesne.order_delete()

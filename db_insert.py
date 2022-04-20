@@ -1,6 +1,6 @@
 import pyodbc
 import datetime
-import db_query as query
+
 
 class Insert:
     def __init__(self):
@@ -111,15 +111,13 @@ class Insert:
             e = str(e)
             return e
 
-    def order_detail_insert(self, product_id, product_count, order_id):
+    def order_detail_insert(self, product_id, product_price, count, order_id):
         try:
-            que = query.Query()
-            product_price = que.product_price_query(product_id,product_count)
             curs = self.db_con.cursor()
             curs.execute("INSERT INTO [abdullah_pys].[OrderDetail] (ProductID,ProductPrice,Count,OrderID) VALUES (?,?,?,?)",
                             int(product_id),
                             product_price,
-                            int(product_count),
+                            int(count),
                             int(order_id))
             curs.commit()
             return True
@@ -127,14 +125,3 @@ class Insert:
             e = str(e)
             return e
 
-
-
-# nesne = Insert()
-#
-# print(nesne.order_detail_insert(3, 27, 1))
-# print(nesne.order_insert(1,2))
-# print(nesne.cart_insert(1,2,4))
-# print(nesne.product_image_insert(1,"url2"))
-# print(nesne.product_insert("Tarhun",13,"Tarhun açıklaması",147,"baharat"))
-# print(nesne.user_insert("Yasin","Şahin","yasin@mail.com","0541884423","test123","Samsun","Hançerli mahallesi","Test adres",2))
-# nesne.admin_insert("test","test","test@mail.com","test123")
