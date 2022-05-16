@@ -5,14 +5,14 @@ class Delete:
         self.db_con = pyodbc.connect(
             'Driver={ODBC Driver 17 for SQL Server};'
             'Server=sql.athena.domainhizmetleri.com;'
-            'Database=abdullah_web;'
-            'UID=abdullah_pys;'
-            'PWD=@PassWord123;'
+            'Database=<database_name>;'
+            'UID=<db_uid>;'
+            'PWD=<password>;'
         )
     def cart_delete(self, user_id):
         try:
             curs = self.db_con.cursor()
-            curs.execute('DELETE FROM [abdullah_pys].[Cart] WHERE UserID = ? ', user_id)
+            curs.execute('DELETE FROM [db_name].[Cart] WHERE UserID = ? ', user_id)
             self.db_con.commit()
             return True
         except Exception as e:
@@ -22,7 +22,7 @@ class Delete:
     def order_detail_delete(self):
         try:
             curs = self.db_con.cursor()
-            curs.execute('DELETE FROM [abdullah_pys].[OrderDetail]')
+            curs.execute('DELETE FROM [db_name].[OrderDetail]')
             self.db_con.commit()
             return True
         except Exception as e:
@@ -32,7 +32,7 @@ class Delete:
     def order_delete(self):
         try:
             curs = self.db_con.cursor()
-            curs.execute('DELETE FROM [abdullah_pys].[Order]')
+            curs.execute('DELETE FROM [db_name].[Order]')
             self.db_con.commit()
             return True
         except Exception as e:

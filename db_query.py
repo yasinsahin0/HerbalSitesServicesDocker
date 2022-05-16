@@ -10,15 +10,15 @@ class Query:
         self.db_con = pyodbc.connect(
             'Driver={ODBC Driver 17 for SQL Server};'
             'Server=sql.athena.domainhizmetleri.com;'
-            'Database=abdullah_web;'
-            'UID=abdullah_pys;'
-            'PWD=@PassWord123;'
+            'Database=<database_name>;'
+            'UID=<db_uid>;'
+            'PWD=<password>;'
         )
 
     def admin_login_query(self, admin_mail, admin_password):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Admin] WHERE Mail = ? AND Password = ?',
+            curs.execute('SELECT * FROM [db_name].[Admin] WHERE Mail = ? AND Password = ?',
                          admin_mail,
                          admin_password)
             datatable = curs.fetchall()
@@ -32,7 +32,7 @@ class Query:
     def user_login_query(self, user_mail, user_password):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[User] WHERE Mail = ? AND Password = ?',
+            curs.execute('SELECT * FROM [db_name].[User] WHERE Mail = ? AND Password = ?',
                          user_mail,
                          user_password)
             datatable = curs.fetchall()
@@ -46,7 +46,7 @@ class Query:
     def user_query(self, user_mail):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[User] WHERE Mail = ? ', user_mail)
+            curs.execute('SELECT * FROM [db_name].[User] WHERE Mail = ? ', user_mail)
             datatable = curs.fetchall()
             for data in datatable:
                 dictionary = {
@@ -72,7 +72,7 @@ class Query:
             dicx ={}
             count = 0
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Cart] WHERE UserID = ? ', user_id)
+            curs.execute('SELECT * FROM [db_name].[Cart] WHERE UserID = ? ', user_id)
             datatable = curs.fetchall()
             for data in datatable:
                 count += 1
@@ -92,7 +92,7 @@ class Query:
     def product_query(self, product_id):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ? ', int(product_id))
+            curs.execute('SELECT * FROM [db_name].[Product] WHERE ID = ? ', int(product_id))
             datatable = curs.fetchall()
             for data in datatable:
                 dictionary = {
@@ -113,7 +113,7 @@ class Query:
         try:
             dict_meta = {}
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            curs.execute('SELECT * FROM [db_name].[Product]')
             datatable = curs.fetchall()
             counter = 0
             for i in range(len(datatable), 0, -1):
@@ -131,7 +131,7 @@ class Query:
     def top_sellers_query(self, count):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[OrderDetail] ORDER BY Count DESC')
+            curs.execute('SELECT * FROM [db_name].[OrderDetail] ORDER BY Count DESC')
             datatable = curs.fetchall()
             dicte = {}
             counter = 0
@@ -150,7 +150,7 @@ class Query:
         try:
             dict_meta = {}
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[İmage] WHERE ProductID = ?', int(product_id))
+            curs.execute('SELECT * FROM [db_name].[İmage] WHERE ProductID = ?', int(product_id))
             datatable = curs.fetchall()
             counter = 0
             for data in datatable:
@@ -169,7 +169,7 @@ class Query:
     def product_price_query(self, product_id, product_count):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ?', int(product_id))
+            curs.execute('SELECT * FROM [db_name].[Product] WHERE ID = ?', int(product_id))
             datatable = curs.fetchall()
             for data in datatable:
                return data[2] * product_count
@@ -180,7 +180,7 @@ class Query:
     def random_product_query(self, count):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            curs.execute('SELECT * FROM [db_name].[Product]')
             datatable = curs.fetchall()
             dicte = {}
             counter = 0
@@ -188,7 +188,7 @@ class Query:
                 counter += 1
                 rndm = random.randint(1, len(datatable))
                 curs = self.db_con.cursor()
-                curs.execute('SELECT * FROM [abdullah_pys].[Product] WHERE ID = ?', rndm)
+                curs.execute('SELECT * FROM [db_name].[Product] WHERE ID = ?', rndm)
                 dtable = curs.fetchall()
                 for data in dtable:
                     dicx = {
@@ -211,7 +211,7 @@ class Query:
         try:
             dicte = {}
             curs = self.db_con.cursor()
-            curs.execute('SELECT TOP 12 * FROM [abdullah_pys].[Product] WHERE ID <= ? AND ID > ? ORDER BY ID DESC', page_number*12, page_number*12-12)
+            curs.execute('SELECT TOP 12 * FROM [db_name].[Product] WHERE ID <= ? AND ID > ? ORDER BY ID DESC', page_number*12, page_number*12-12)
             datatable = curs.fetchall()
             counter = 0
             for data in datatable:
@@ -234,13 +234,13 @@ class Query:
         try:
 
             curs = self.db_con.cursor()
-            curs.execute('SELECT ProductID,Count FROM [abdullah_pys].[Cart] WHERE UserID = ?', user_id)
+            curs.execute('SELECT ProductID,Count FROM [db_name].[Cart] WHERE UserID = ?', user_id)
             datatable = curs.fetchall()
             product_count = 0
             cart_price = 0
             for data in datatable:
                 curs = self.db_con.cursor()
-                curs.execute('SELECT Price FROM [abdullah_pys].[Product] WHERE ID = ?', data[0])
+                curs.execute('SELECT Price FROM [db_name].[Product] WHERE ID = ?', data[0])
                 datat = curs.fetchall()
 
                 for dt in datat:
@@ -256,7 +256,7 @@ class Query:
     def total_product_page_count(self):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Product]')
+            curs.execute('SELECT * FROM [db_name].[Product]')
             datatable = curs.fetchall()
             counter = 0
             for data in datatable:
@@ -273,7 +273,7 @@ class Query:
         try:
 
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Order] WHERE UserID = ? ', int(user_id))
+            curs.execute('SELECT * FROM [db_name].[Order] WHERE UserID = ? ', int(user_id))
             datatable = curs.fetchall()
 
             for data in datatable:
@@ -296,7 +296,7 @@ class Query:
         try:
             dicte = {}
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Order] WHERE UserID = ? ', int(user_id))
+            curs.execute('SELECT * FROM [db_name].[Order] WHERE UserID = ? ', int(user_id))
             datatable = curs.fetchall()
             counter = 0
             for data in datatable:
@@ -320,7 +320,7 @@ class Query:
             counter = 0
             dicte = {}
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[Cart] WHERE UserID = ? ', int(user_id))
+            curs.execute('SELECT * FROM [db_name].[Cart] WHERE UserID = ? ', int(user_id))
             datatable = curs.fetchall()
             for data in datatable:
                 counter += 1
@@ -340,7 +340,7 @@ class Query:
             insert_date = datetime.datetime.now()
             update_date = datetime.datetime.now()
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[Order] (UserID,Status,InsertDate,UpdateDate) VALUES (?,?,?,?)",
+            curs.execute("INSERT INTO [db_name].[Order] (UserID,Status,InsertDate,UpdateDate) VALUES (?,?,?,?)",
                             int(user_id),
                             int(status),
                             insert_date,

@@ -7,15 +7,15 @@ class Insert:
         self.db_con = pyodbc.connect(
             'Driver={ODBC Driver 17 for SQL Server};'
             'Server=sql.athena.domainhizmetleri.com;'
-            'Database=abdullah_web;'
-            'UID=abdullah_pys;'
-            'PWD=@PassWord123;'
+            'Database=<database_name>;'
+            'UID=<db_uid>;'
+            'PWD=<password>;'
         )
 
     def test(self):
         try:
             curs = self.db_con.cursor()
-            curs.execute('SELECT * FROM [abdullah_pys].[İmage]')
+            curs.execute('SELECT * FROM [db_name].[İmage]')
             users = curs.fetchall()
             for i in users:
                 print(i)
@@ -37,7 +37,7 @@ class Insert:
         try:
 
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[User] (Name,Surname,Mail,Phone,Password,City,District,Adress,Status) VALUES (?,?,?,?,?,?,?,?,?)",
+            curs.execute("INSERT INTO [db_name].[User] (Name,Surname,Mail,Phone,Password,City,District,Adress,Status) VALUES (?,?,?,?,?,?,?,?,?)",
                             str(user_name),
                             str(user_surname),
                             str(user_mail),
@@ -57,7 +57,7 @@ class Insert:
         try:
 
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[Product] (Name,Price,[Content],Stok,Category) VALUES (?,?,?,?,?)",
+            curs.execute("INSERT INTO [db_name].[Product] (Name,Price,[Content],Stok,Category) VALUES (?,?,?,?,?)",
                             str(product_name),
                             product_price,
                             str(product_content),
@@ -72,7 +72,7 @@ class Insert:
     def product_image_insert(self, product_id, product_image_url):
         try:
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[İmage] (ProductID,URL) VALUES (?,?)",
+            curs.execute("INSERT INTO [db_name].[İmage] (ProductID,URL) VALUES (?,?)",
                             int(product_id),
                             product_image_url)
             curs.commit()
@@ -85,7 +85,7 @@ class Insert:
         try:
 
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[Cart] (UserID,ProductID,Count) VALUES (?,?,?)",
+            curs.execute("INSERT INTO [db_name].[Cart] (UserID,ProductID,Count) VALUES (?,?,?)",
                             int(user_id),
                             int(product_id),
                             int(count))
@@ -100,7 +100,7 @@ class Insert:
             insert_date = datetime.datetime.now()
             update_date = datetime.datetime.now()
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[Order] (UserID,Status,InsertDate,UpdateDate) VALUES (?,?,?,?)",
+            curs.execute("INSERT INTO [db_name].[Order] (UserID,Status,InsertDate,UpdateDate) VALUES (?,?,?,?)",
                             int(user_id),
                             int(status),
                             insert_date,
@@ -114,7 +114,7 @@ class Insert:
     def order_detail_insert(self, product_id, product_price, count, order_id):
         try:
             curs = self.db_con.cursor()
-            curs.execute("INSERT INTO [abdullah_pys].[OrderDetail] (ProductID,ProductPrice,Count,OrderID) VALUES (?,?,?,?)",
+            curs.execute("INSERT INTO [db_name].[OrderDetail] (ProductID,ProductPrice,Count,OrderID) VALUES (?,?,?,?)",
                             int(product_id),
                             product_price,
                             int(count),
